@@ -9,7 +9,6 @@
 #include "matrix.h"
 #include "parser.h"
 
-
 /*======== void parse_file () ==========
 Inputs:   char * filename
           struct matrix * transform,
@@ -22,7 +21,7 @@ The file follows the following format:
      Every command is a single character that takes up a line
      Any command that requires arguments must have those arguments in the second line.
      The commands are as follows:
-         line: add a line to the edge matrix -
+   line: add a line to the edge matrix -
 	    takes 6 arguemnts (x0, y0, z0, x1, y1, z1)
 	 ident: set the transform matrix to the identity matrix -
 	 scale: create a scale matrix,
@@ -45,7 +44,6 @@ The file follows the following format:
 
 See the file script for an example of the file format
 
-
 IMPORTANT MATH NOTE:
 the trig functions int math.h use radian mesure, but us normal
 humans use degrees, so the file will contain degrees for rotations,
@@ -60,6 +58,9 @@ void parse_file ( char * filename,
   FILE *f;
   char line[256];
   char args[8];
+  char * temp;
+  int i;
+
   clear_screen(s);
 
   if ( strcmp(filename, "stdin") == 0 )
@@ -75,15 +76,16 @@ void parse_file ( char * filename,
     if( !strcmp(line, "line") ){
       //need to get the next line which contains the coordinates for the point
       fgets(line, 255, f);
-      //points now has all the points, is temp
-      char * points = line;
+      //temp now has all the points
+      temp = line;
       //fetching the arguments
-      int i = 0;
-      while(args[i] = strsep(&points, " ")){
+      i = 0;
+      while(args[i] = strsep(&temp, " ")){
         i++;
       }
       //adding da points
       add_edge(edges, atoi(args[0]), atoi(args[1]), atoi(args[2]), atoi(args[3]), atoi(args[4]), atoi(args[5]));
+      args = 0;
     }
 
     //ident:
@@ -92,12 +94,61 @@ void parse_file ( char * filename,
     }
 
     //scale:
-    /***
     else if( !strcmp(line, "scale") ){
-      double x =
-      double y =
-      double z =
+      //needs to get the next line which contains the scale factors for the points
+      fgets(line, 255, f);
+      //temp now contains the scaling factors
+      temp = line;
+      //fetching the arguments
+      i = 0;
+      while(args[i] = strsep(&temp, " ")){
+        i++;
+      }
+      //creating the scale matrix
+      transform = matrix_mult(make_scale( atoi(args[0]), atoi(args[1]), atoi(args[2]), transform);
+      args = 0;
     }
-    ***/
+
+    //translate:
+    else if( !strcmp(line, "translate") ){
+      //need to get the next line which contains the translation factors
+      fgets(line, 255, f);
+      //temp now contains these addings/subtractions
+      temp = line;
+      //fetching the arguments
+      i = 0;
+      while(args[i] = strsep(&temp, " ")){
+        i++;
+      }
+      //creating the translation matrix
+      transform = matrix_mult(make_translate( atoi(args[0]), atoi(args[1]), atoi(args[2]),transform);
+      args = 0;
+    }
+
+    //rotation:
+    elseif( !strcmp(line, "rotate") ){
+      //need to get the next line which contains axis and theta
+      fgets(line, 255, f);
+      //temp now contains axis and theta
+      temp = line;
+      //fetching the arguments
+      i = 0;
+      while(args[i] = strsep(&temp, " ")){
+        i++;
+      }
+      //creating the rotation matrix
+      if(args[0] == "x"){
+
+      }
+      else if(args[0] == "y"){
+
+      }
+      else if(args[0] == "z"){
+
+      }
+      else{
+        printf("invalid argument\n");
+      }
+    }
   }
 }
