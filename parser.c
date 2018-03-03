@@ -86,12 +86,12 @@ void parse_file ( char * filename,
       temp = line;
       //fetching the arguments
       i = 0;
-      while(args[i] = strsep(&temp, " ")){
+      while( (args[i] = *strsep(&temp, " ")) ){
         i++;
       }
       //adding da points
-      add_edge(edges, atoi(args[0]), atoi(args[1]), atoi(args[2]), atoi(args[3]), atoi(args[4]), atoi(args[5]));
-      args = 0;
+      add_edge(edges, atoi(&args[0]), atoi(&args[1]), atoi(&args[2]), atoi(&args[3]), atoi(&args[4]), atoi(&args[5]));
+      //args = 0;
     }
 
     //ident:
@@ -107,12 +107,12 @@ void parse_file ( char * filename,
       temp = line;
       //fetching the arguments
       i = 0;
-      while(args[i] = strsep(&temp, " ")){
+      while( (args[i] = *strsep(&temp, " ")) ){
         i++;
       }
       //creating the scale matrix
-      transform = matrix_mult(make_scale( atoi(args[0]), atoi(args[1]), atoi(args[2]), transform);
-      args = 0;
+      matrix_mult(make_scale( atoi(&args[0]), atoi(&args[1]), atoi(&args[2])), transform);
+      //args = 0;
     }
 
     //translate:
@@ -123,34 +123,34 @@ void parse_file ( char * filename,
       temp = line;
       //fetching the arguments
       i = 0;
-      while(args[i] = strsep(&temp, " ")){
+      while( (args[i] = *strsep(&temp, " ")) ){
         i++;
       }
       //creating the translation matrix
-      transform = matrix_mult(make_translate( atoi(args[0]), atoi(args[1]), atoi(args[2]),transform);
-      args = 0;
+      matrix_mult(make_translate( atoi(&args[0]), atoi(&args[1]), atoi(&args[2])), transform);
+      //args = 0;
     }
 
     //rotation:
-    elseif( !strcmp(line, "rotate") ){
+    else if( !strcmp(line, "rotate") ){
       //need to get the next line which contains axis and theta
       fgets(line, 255, f);
       //temp now contains axis and theta
       temp = line;
       //fetching the arguments
       i = 0;
-      while(args[i] = strsep(&temp, " ")){
+      while( (args[i] = *strsep(&temp, " ")) ){
         i++;
       }
       //creating the rotation matrix
-      if(args[0] == "x"){
-        transform = matrix_mult(make_rotX( atoi(args[1]), transform);
+      if( !strcmp(&args[0], "x")){
+        matrix_mult(make_rotX( atoi(&args[1])), transform);
       }
-      else if(args[0] == "y"){
-        transform = matrix_mult(make_rotY( atoi(args[1]), transform);
+      else if( !strcmp(&args[0], "y")){
+        matrix_mult(make_rotY( atoi(&args[1])), transform);
       }
-      else if(args[0] == "z"){
-        transform = matrix_mult(make_rotZ( atoi(args[1]), transform);
+      else if( !strcmp(&args[0], "z")){
+        matrix_mult(make_rotZ( atoi(&args[1])), transform);
       }
       else{
         printf("invalid argument\n");
@@ -158,19 +158,19 @@ void parse_file ( char * filename,
     }
 
     //apply:
-    elseif( !strcmp(line, "apply") ){
-      edge = matrix_mult(transform, edges);
+    else if( !strcmp(line, "apply") ){
+      matrix_mult(transform, edges);
     }
 
     //display:
-    elseif( !strcmp(line, "display") ){
+    else if( !strcmp(line, "display") ){
       clear_screen(s);
       draw_lines(edges, s, c);
       display(s);
     }
 
     //save:
-    elseif( !strcmp(line, "save") ){
+    else if( !strcmp(line, "save") ){
       //need to get next line which contains the filename
       fgets(line, 255, f);
       draw_lines( edges, s, c );
@@ -178,7 +178,7 @@ void parse_file ( char * filename,
     }
 
     //quit:
-    elseif( !strcmp(line, "quit") ){
+    else if( !strcmp(line, "quit") ){
       exit(0);
     }
 
