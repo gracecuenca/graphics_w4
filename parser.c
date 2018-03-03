@@ -61,6 +61,12 @@ void parse_file ( char * filename,
   char * temp;
   int i;
 
+  color c;
+
+  c.red = 255;
+  c.blue = 255;
+  c.green = 255;
+
   clear_screen(s);
 
   if ( strcmp(filename, "stdin") == 0 )
@@ -138,17 +144,48 @@ void parse_file ( char * filename,
       }
       //creating the rotation matrix
       if(args[0] == "x"){
-
+        transform = matrix_mult(make_rotX( atoi(args[1]), transform);
       }
       else if(args[0] == "y"){
-
+        transform = matrix_mult(make_rotY( atoi(args[1]), transform);
       }
       else if(args[0] == "z"){
-
+        transform = matrix_mult(make_rotZ( atoi(args[1]), transform);
       }
       else{
         printf("invalid argument\n");
       }
     }
+
+    //apply:
+    elseif( !strcmp(line, "apply") ){
+      edge = matrix_mult(transform, edges);
+    }
+
+    //display:
+    elseif( !strcmp(line, "display") ){
+      clear_screen(s);
+      draw_lines(edges, s, c);
+      display(s);
+    }
+
+    //save:
+    elseif( !strcmp(line, "save") ){
+      //need to get next line which contains the filename
+      fgets(line, 255, f);
+      draw_lines( edges, s, c );
+      save_extension(s, line);
+    }
+
+    //quit:
+    elseif( !strcmp(line, "quit") ){
+      exit(0);
+    }
+
+    //invalid argument:
+    else{
+      printf("invalid argument\n");
+    }
+
   }
 }
