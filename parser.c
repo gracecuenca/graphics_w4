@@ -117,7 +117,7 @@ void parse_file ( char * filename,
     }
 
     //translate:
-    else if( !strcmp(line, "translate") ){
+    else if( !strcmp(line, "move") ){
       //need to get the next line which contains the translation factors
       fgets(line, 255, f);
       //temp now contains these addings/subtractions

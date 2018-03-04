@@ -15,9 +15,9 @@ as the translation offsets.
 struct matrix * make_translate(double x, double y, double z) {
   struct matrix * translate = new_matrix(4,4);
   ident(translate);
-  translate->m[3][0] = x;
-  translate->m[3][1] = y;
-  translate->m[3][2] = z;
+  translate->m[0][3] = x;
+  translate->m[1][3] = y;
+  translate->m[2][3] = z;
   return translate;
 }
 
