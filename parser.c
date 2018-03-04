@@ -57,7 +57,7 @@ void parse_file ( char * filename,
 
   FILE *f;
   char line[256];
-  char args[8];
+  char* args[8];
   char * temp;
   int i;
 
@@ -86,11 +86,12 @@ void parse_file ( char * filename,
       temp = line;
       //fetching the arguments
       i = 0;
-      while( (args[i] = *strsep(&temp, " ")) ){
+      while( (args[i] = strsep(&temp, " ")) ){
         i++;
       }
+
       //adding da points
-      add_edge(edges, atoi(&args[0]), atoi(&args[1]), atoi(&args[2]), atoi(&args[3]), atoi(&args[4]), atoi(&args[5]));
+      add_edge(edges, atoi(args[0]), atoi(args[1]), atoi(args[2]), atoi(args[3]), atoi(args[4]), atoi(args[5]));
       //args = 0;
     }
 
@@ -107,11 +108,11 @@ void parse_file ( char * filename,
       temp = line;
       //fetching the arguments
       i = 0;
-      while( (args[i] = *strsep(&temp, " ")) ){
+      while( (args[i] = strsep(&temp, " ")) ){
         i++;
       }
       //creating the scale matrix
-      matrix_mult(make_scale( atoi(&args[0]), atoi(&args[1]), atoi(&args[2])), transform);
+      matrix_mult(make_scale( atoi(args[0]), atoi(args[1]), atoi(args[2])), transform);
       //args = 0;
     }
 
@@ -123,11 +124,11 @@ void parse_file ( char * filename,
       temp = line;
       //fetching the arguments
       i = 0;
-      while( (args[i] = *strsep(&temp, " ")) ){
+      while( (args[i] = strsep(&temp, " ")) ){
         i++;
       }
       //creating the translation matrix
-      matrix_mult(make_translate( atoi(&args[0]), atoi(&args[1]), atoi(&args[2])), transform);
+      matrix_mult(make_translate( atoi(args[0]), atoi(args[1]), atoi(args[2])), transform);
       //args = 0;
     }
 
@@ -139,18 +140,18 @@ void parse_file ( char * filename,
       temp = line;
       //fetching the arguments
       i = 0;
-      while( (args[i] = *strsep(&temp, " ")) ){
+      while( (args[i] = strsep(&temp, " ")) ){
         i++;
       }
       //creating the rotation matrix
-      if( !strcmp(&args[0], "x")){
-        matrix_mult(make_rotX( atoi(&args[1])), transform);
+      if( !strcmp(args[0], "x")){
+        matrix_mult(make_rotX( atoi(args[1])), transform);
       }
-      else if( !strcmp(&args[0], "y")){
-        matrix_mult(make_rotY( atoi(&args[1])), transform);
+      else if( !strcmp(args[0], "y")){
+        matrix_mult(make_rotY( atoi(args[1])), transform);
       }
-      else if( !strcmp(&args[0], "z")){
-        matrix_mult(make_rotZ( atoi(&args[1])), transform);
+      else if( !strcmp(args[0], "z")){
+        matrix_mult(make_rotZ( atoi(args[1])), transform);
       }
       else{
         printf("invalid argument\n");
